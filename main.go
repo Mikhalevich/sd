@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Mikhalevich/downloader"
@@ -85,7 +86,7 @@ func doDownload(url string, params *Params) error {
 	task.MaxDownloaders = params.MaxWorkers
 	task.ChunkSize = params.ChunkSize
 	if params.UseFileSystem {
-		task.CS = downloader.NewFileStorer(fmt.Sprintf("%s_%s", url, "chunks"))
+		task.CS = downloader.NewFileStorer(fmt.Sprintf("%s_%s", url[strings.LastIndex(url, "/")+1:], "chunks"))
 	}
 
 	if err := task.Download(url); err != nil {
