@@ -1,21 +1,14 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
-	"flag"
 	"fmt"
-	"io/ioutil"
 	"net/url"
-	"os"
 	"strings"
 	"time"
 
+	"github.com/Mikhalevich/argparser"
 	"github.com/Mikhalevich/downloader"
-)
-
-var (
-	cConfig = "sd_config.json"
 )
 
 type Params struct {
@@ -33,39 +26,18 @@ func NewParams() *Params {
 	}
 }
 
-func loadParams(configFile string) (*Params, error) {
-	params := NewParams()
-
-	file, err := os.Open(configFile)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return params, nil
-		}
-		return nil, err
-	}
-	defer file.Close()
-
-	bytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(bytes, params)
-	if err != nil {
-		return nil, err
-	}
-
-	return params, nil
+func loadParams() (*Params, error) {
+	basicParams := NewParams()
+	params, err, _ := argparser.Parse(basicParams)
+	return params.(*Params), err
 }
 
 func getUrl() (string, error) {
-	flag.Parse()
-
-	if flag.NArg() <= 0 {
+	if argparser.NArg() <= 0 {
 		return "", errors.New("No url for download specified")
 	}
 
-	urlString := flag.Arg(0)
+	urlString := argparser.Arg(0)
 	uri, err := url.Parse(urlString)
 	if err != nil {
 		return "", err
@@ -98,13 +70,13 @@ func doDownload(url string, params *Params) error {
 }
 
 func main() {
-	uri, err := getUrl()
+	params, err := loadParams()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	params, err := loadParams(cConfig)
+	uri, err := getUrl()
 	if err != nil {
 		fmt.Println(err)
 		return
