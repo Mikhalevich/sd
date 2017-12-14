@@ -20,9 +20,10 @@ type Params struct {
 
 func NewParams() *Params {
 	return &Params{
-		Method:     "GET",
-		MaxWorkers: downloader.DefaultMaxWorkers,
-		ChunkSize:  downloader.DefaultChunkSize,
+		Method:        "GET",
+		MaxWorkers:    downloader.DefaultMaxWorkers,
+		ChunkSize:     downloader.DefaultChunkSize,
+		UseFileSystem: true,
 	}
 }
 
