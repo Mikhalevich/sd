@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 
@@ -59,7 +60,9 @@ func doDownload(url string, params *Params) error {
 	task.MaxDownloaders = params.MaxWorkers
 	task.ChunkSize = params.ChunkSize
 	if params.UseFileSystem {
-		task.CS = downloader.NewFileStorer(fmt.Sprintf("%s_%s", url[strings.LastIndex(url, "/")+1:], "chunks"))
+		chunksPath := fmt.Sprintf("%s_%s", url[strings.LastIndex(url, "/")+1:], "chunks")
+		task.CS = downloader.NewFileStorer(chunksPath)
+		defer os.RemoveAll(chunksPath)
 	}
 
 	if err := task.Download(url); err != nil {
