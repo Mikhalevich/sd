@@ -10,6 +10,7 @@ import (
 
 	"github.com/Mikhalevich/argparser"
 	"github.com/Mikhalevich/downloader"
+	"gopkg.in/cheggaaa/pb.v1"
 )
 
 type Params struct {
@@ -52,6 +53,20 @@ func getUrl() (string, error) {
 	return urlString, nil
 }
 
+func showProgress(c chan int64) {
+	go func() {
+		content := <-c
+
+		bar := pb.New64(content)
+		bar.Start()
+
+		for chunk := range c {
+			bar.Add64(chunk)
+		}
+		bar.Finish()
+	}()
+}
+
 func doDownload(url string, params *Params) error {
 	startTime := time.Now()
 
@@ -64,6 +79,9 @@ func doDownload(url string, params *Params) error {
 		task.CS = downloader.NewFileStorer(chunksPath)
 		defer os.RemoveAll(chunksPath)
 	}
+	task.Notifier = make(chan int64, task.MaxDownloaders*3)
+
+	showProgress(task.Notifier)
 
 	if err := task.Download(url); err != nil {
 		return err
