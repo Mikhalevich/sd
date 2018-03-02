@@ -83,11 +83,12 @@ func doDownload(url string, params *Params) error {
 
 	showProgress(task.Notifier)
 
-	if err := task.Download(url); err != nil {
+	fileName, err := task.Download(url)
+	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Downloaded sucessfully, time elapsed: %s\n", time.Now().Sub(startTime))
+	fmt.Printf("Downloaded sucessfully into %s, time elapsed: %s\n", fileName, time.Now().Sub(startTime))
 	return nil
 }
 
