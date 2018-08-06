@@ -14,10 +14,10 @@ import (
 )
 
 type Params struct {
-	Method        string `json:"method, omitempty"`
-	MaxWorkers    int64  `json:"max_workers, omitempty"`
-	ChunkSize     int64  `json:"chunk_size, omitempty"`
-	UseFileSystem bool   `json:"use_filesystem, omitempty"`
+	Method        string `json:"method,omitempty"`
+	MaxWorkers    int64  `json:"max_workers,omitempty"`
+	ChunkSize     int64  `json:"chunk_size,omitempty"`
+	UseFileSystem bool   `json:"use_filesystem,omitempty"`
 }
 
 func NewParams() *Params {
@@ -35,7 +35,7 @@ func loadParams() (*Params, error) {
 	return params.(*Params), err
 }
 
-func getUrl() (string, error) {
+func getURL() (string, error) {
 	if argparser.NArg() <= 0 {
 		return "", errors.New("No url for download specified")
 	}
@@ -85,7 +85,7 @@ func main() {
 		return
 	}
 
-	uri, err := getUrl()
+	uri, err := getURL()
 	if err != nil {
 		fmt.Println(err)
 		return
