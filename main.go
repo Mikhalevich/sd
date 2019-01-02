@@ -29,18 +29,13 @@ func NewParams() *Params {
 	}
 }
 
-func loadParams() (*Params, error) {
-	basicParams := NewParams()
-	params, err, _ := argparser.Parse(basicParams)
-	return params.(*Params), err
-}
-
-func getURL() (string, error) {
-	if argparser.NArg() <= 0 {
+func getURL(p *argparser.Parser) (string, error) {
+	arguments := p.Arguments()
+	if len(arguments) <= 0 {
 		return "", errors.New("No url for download specified")
 	}
 
-	urlString := argparser.Arg(0)
+	urlString := arguments[0]
 	uri, err := url.Parse(urlString)
 	if err != nil {
 		return "", err
@@ -51,6 +46,22 @@ func getURL() (string, error) {
 	}
 
 	return urlString, nil
+}
+
+func loadParams() (*Params, string, error) {
+	p := argparser.NewParser()
+	basicParams := NewParams()
+	params, err, _ := p.Parse(basicParams)
+	if err != nil {
+		return nil, "", err
+	}
+
+	uri, err := getURL(p)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return params.(*Params), uri, err
 }
 
 func doDownload(url string, params *Params) error {
@@ -79,13 +90,7 @@ func doDownload(url string, params *Params) error {
 }
 
 func main() {
-	params, err := loadParams()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	uri, err := getURL()
+	params, uri, err := loadParams()
 	if err != nil {
 		fmt.Println(err)
 		return
