@@ -80,12 +80,15 @@ func doDownload(url string, params *Params) error {
 
 	pbw.Show(task.Notifier)
 
-	fileName, err := task.Download(url)
+	info, err := task.Download(url)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Downloaded sucessfully into %s, time elapsed: %s\n", fileName, time.Now().Sub(startTime))
+	fmt.Printf("Downloaded sucessfully into %s, time elapsed: %s\n", info.FileName, time.Now().Sub(startTime))
+	for k, v := range info.Info {
+		fmt.Printf("%s => %s\n", k, v)
+	}
 	return nil
 }
 
