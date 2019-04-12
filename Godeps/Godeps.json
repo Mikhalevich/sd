@@ -1,0 +1,40 @@
+{
+	"ImportPath": "github.com/Mikhalevich/sd",
+	"GoVersion": "go1.12",
+	"GodepVersion": "v80",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/Mikhalevich/argparser",
+			"Rev": "518e0f794423a3740d2e679ee2672557b96df716"
+		},
+		{
+			"ImportPath": "github.com/Mikhalevich/downloader",
+			"Rev": "271b4e81c182da679380aae3b877f1336d8270dd"
+		},
+		{
+			"ImportPath": "github.com/Mikhalevich/jober",
+			"Rev": "41ba695b81aa52103b9d9e4ad6c1bccc6228d8f3"
+		},
+		{
+			"ImportPath": "github.com/Mikhalevich/pbw",
+			"Rev": "1ecfb883e6c073ad6ac3029a4778b378be75957c"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-runewidth",
+			"Comment": "v0.0.2-3-g97311d9",
+			"Rev": "97311d9f7767e3d6f422ea06661bc2c7a19e8a5d"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "fa43e7bc11baaae89f3f902b2b4d832b68234844"
+		},
+		{
+			"ImportPath": "gopkg.in/cheggaaa/pb.v1",
+			"Comment": "v1.0.22",
+			"Rev": "72b964305fba1230d3d818711138195f22b9ceea"
+		}
+	]
+}
